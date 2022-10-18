@@ -1,11 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace EntityFrameworkLinq.Reports
 {
     public abstract class ReportBase<T>
         where T : class
     {
-        private readonly ReadOnlyCollection<T> lines;
+        private readonly IReadOnlyList<T> lines;
 
         protected ReportBase(IList<T> lines, DateTime reportGenerationDate)
         {

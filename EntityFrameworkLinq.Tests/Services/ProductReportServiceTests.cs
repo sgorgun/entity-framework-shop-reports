@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Resources;
 using EntityFrameworkLinq.Reports;
+using EntityFrameworkLinq.Reports.Creators;
 using EntityFrameworkLinq.Services;
 using NUnit.Framework;
 
@@ -10,8 +11,10 @@ namespace EntityFrameworkLinq.Tests.Services
     [TestFixture]
     public sealed class ProductReportServiceTests : IDisposable
     {
-        private ShopContextFactory? factory;
-        private ProductReportService? service;
+        private ShopContextFactory factory;
+        private ProductReportService service;
+
+
 
         [SetUp]
         public void SetUp()
@@ -27,14 +30,7 @@ namespace EntityFrameworkLinq.Tests.Services
             ProductCategoryReport report = this.service!.GetProductCategories();
 
             // Assert
-            this.AssertThatReportHasLines("GetReportCategoriesReport", report.Lines, reader =>
-            {
-                return new ProductCategoryReportLine
-                {
-                    CategoryId = (int)reader.GetInt64(0),
-                    CategoryName = reader.GetString(1),
-                };
-            });
+            this.AssertThatReportHasLines("GetReportCategoriesReport", report.Lines, ProductCategoryReportLineCreator.Create);
         }
 
         [Test]
@@ -44,16 +40,7 @@ namespace EntityFrameworkLinq.Tests.Services
             ProductReport report = this.service!.GetProductReport();
 
             // Assert
-            this.AssertThatReportHasLines("GetProductReport", report.Lines, reader =>
-            {
-                return new ProductReportLine
-                {
-                    ProductId = (int)reader.GetInt64(0),
-                    ProductTitle = reader.GetString(1),
-                    Manufacturer = reader.GetString(2),
-                    Price = reader.GetDecimal(3),
-                };
-            });
+            this.AssertThatReportHasLines("GetProductReport", report.Lines, ProductReportLineCreator.Create);
         }
 
         [Test]
@@ -63,18 +50,7 @@ namespace EntityFrameworkLinq.Tests.Services
             FullProductReport report = this.service!.GetFullProductReport();
 
             // Assert
-            this.AssertThatReportHasLines("GetFullProductReport", report.Lines, reader =>
-            {
-                return new FullProductReportLine
-                {
-                    ProductId = (int)reader.GetInt64(0),
-                    Name = reader.GetString(1),
-                    CategoryId = (int)reader.GetInt64(2),
-                    Manufacturer = reader.GetString(3),
-                    Price = reader.GetDecimal(4),
-                    Category = reader.GetString(5),
-                };
-            });
+            this.AssertThatReportHasLines("GetFullProductReport", report.Lines, FullProductReportLineCreator.Create);
         }
 
         public void Dispose()
