@@ -11,51 +11,34 @@ namespace EntityFrameworkLinq.Tests.Services
     [TestFixture]
     public sealed class ProductReportServiceTests : IDisposable
     {
-        private ShopContextFactory factory;
-        private ProductReportService service;
+        private const int methodsCount = 3;
+        private static ShopContextFactory factory;
+        private static ProductReportService service;
+        private static List<(string methodName, IReadOnlyList<BaseReportLine> actual, IReadOnlyList<BaseReportLine> expected)> testContainer;
 
-
-
-        [SetUp]
+        [OneTimeSetUp]
+        //[SetUp]
         public void SetUp()
         {
-            this.factory = new ShopContextFactory();
-            this.service = new ProductReportService(this.factory.CreateContext());
+            factory = new ShopContextFactory();
+            service = new ProductReportService(factory.CreateContext());
+            testContainer = new List<(string methodName, IReadOnlyList<BaseReportLine> actual, IReadOnlyList<BaseReportLine> expected)>();
+            testContainer.Add(("GetReportCategoriesReport", service.GetProductCategories().Lines, factory.ReadEntities(GetSqlQuery("GetReportCategoriesReport"), ProductCategoryReportLineCreator.Create)));
+            testContainer.Add(("GetProductReport", service.GetProductReport().Lines, factory!.ReadEntities(GetSqlQuery("GetProductReport"), ProductReportLineCreator.Create)));
+            testContainer.Add(("GetFullProductReport", service.GetFullProductReport().Lines, factory.ReadEntities(GetSqlQuery("GetFullProductReport"), FullProductReportLineCreator.Create)));
+            //testContainer.Add(("GetReportCategoriesReport", service.GetProductCategories().Lines, factory.ReadEntities(GetSqlQuery("GetReportCategoriesReport"), ProductCategoryReportLineCreator.Create)));
         }
 
         [Test]
-        public void GetReportCategories_ReturnsReport()
+        public void ReportService_ReturnsCorrectReportLines([Range(1, methodsCount)] int index)
         {
-            // Act
-            ProductCategoryReport report = this.service!.GetProductCategories();
-
-            // Assert
-            this.AssertThatReportHasLines("GetReportCategoriesReport", report.Lines, ProductCategoryReportLineCreator.Create);
-        }
-
-        [Test]
-        public void GetProductReport_ReturnsReport()
-        {
-            // Act
-            ProductReport report = this.service!.GetProductReport();
-
-            // Assert
-            this.AssertThatReportHasLines("GetProductReport", report.Lines, ProductReportLineCreator.Create);
-        }
-
-        [Test]
-        public void GetFullProductReport_ReturnsReport()
-        {
-            // Act
-            FullProductReport report = this.service!.GetFullProductReport();
-
-            // Assert
-            this.AssertThatReportHasLines("GetFullProductReport", report.Lines, FullProductReportLineCreator.Create);
+            var rec = testContainer[--index];
+            Assert.AreEqual(rec.actual, rec.expected, $"{rec.methodName}");
         }
 
         public void Dispose()
         {
-            this.factory!.Dispose();
+            factory!.Dispose();
         }
 
         private static string? GetSqlQuery(string sqlQueryName)
@@ -70,7 +53,7 @@ namespace EntityFrameworkLinq.Tests.Services
         private void AssertThatReportHasLines<T>(string sqlQueryName, IReadOnlyList<T> reportItems, Func<DbDataReader, T> builder)
         {
             string? sqlQuery = GetSqlQuery(sqlQueryName);
-            var list = this.factory!.ReadEntities(sqlQuery!, builder);
+            var list = factory!.ReadEntities(sqlQuery!, builder);
 
             Assert.That(reportItems.Count, Is.EqualTo(list.Count));
 

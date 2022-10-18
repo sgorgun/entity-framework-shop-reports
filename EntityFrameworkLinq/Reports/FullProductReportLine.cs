@@ -1,6 +1,6 @@
 ﻿namespace EntityFrameworkLinq.Reports
 {
-    public class FullProductReportLine
+    public class FullProductReportLine : BaseReportLine
     {
         public int ProductId { get; init; }
 
