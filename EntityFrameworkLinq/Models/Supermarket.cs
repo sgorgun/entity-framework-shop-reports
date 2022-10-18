@@ -1,0 +1,16 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EntityFrameworkLinq.Models
+{
+    [Table("supermarkets")]
+    public class Supermarket
+    {
+        [Column("supermarket_id")]
+        public int Id { get; set; }
+
+        [Column("supermarket_name")]
+        public string Name { get; set; }
+
+        public virtual IList<SupermarketLocation> Locations { get; set; }
+    }
+}
