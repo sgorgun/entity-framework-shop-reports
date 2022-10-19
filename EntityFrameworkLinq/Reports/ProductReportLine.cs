@@ -1,4 +1,7 @@
-﻿namespace EntityFrameworkLinq.Reports
+﻿using EntityFrameworkLinq.Models;
+using System.Xml.Linq;
+
+namespace EntityFrameworkLinq.Reports
 {
     public class ProductReportLine : BaseReportLine
     {
@@ -28,6 +31,12 @@
         public override int GetHashCode()
         {
             return this.ProductId;
+        }
+
+
+        public override string ToString()
+        {
+            return $"{ProductId}|{ProductTitle}|{Manufacturer}|{Price}";
         }
     }
 }

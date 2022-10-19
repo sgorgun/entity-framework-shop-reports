@@ -35,5 +35,10 @@
         {
             return this.ProductId;
         }
+
+        public override string ToString()
+        {
+            return $"{ProductId}|{Name}|{CategoryId}|{Category}|{Manufacturer}|{Price}";
+        }
     }
 }

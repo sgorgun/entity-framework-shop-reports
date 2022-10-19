@@ -4,6 +4,7 @@ using System.Resources;
 using EntityFrameworkLinq.Reports;
 using EntityFrameworkLinq.Reports.Creators;
 using EntityFrameworkLinq.Services;
+using EntityFrameworkLinq.Tests.Helper;
 using NUnit.Framework;
 
 namespace EntityFrameworkLinq.Tests.Services
@@ -33,7 +34,11 @@ namespace EntityFrameworkLinq.Tests.Services
         public void ReportService_ReturnsCorrectReportLines([Range(1, methodsCount)] int index)
         {
             var rec = testContainer[--index];
-            Assert.AreEqual(rec.actual, rec.expected, $"{rec.methodName}");
+            var errorMsg = $"Class: ProductReportService \n  Method {rec.methodName} returns report";
+            var rowNumberErrorMsg = errorMsg + $" that must conteins {rec.expected.Count} lines, but {rec.actual.Count} lines given!";
+            var dataSetErrorMsg = errorMsg + $" that actual data \n{rec.actual.ConvertToString()}   are not equals to expected data \n{rec.expected.ConvertToString()}";
+            Assert.AreEqual(rec.actual.Count, rec.expected.Count, rowNumberErrorMsg);
+            Assert.AreEqual(rec.actual, rec.expected, dataSetErrorMsg);
         }
 
         public void Dispose()
