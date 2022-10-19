@@ -17,8 +17,7 @@ namespace EntityFrameworkLinq.Services
         {
             var lines = this.shopContext.Categories
                 .Select(c => new ProductCategoryReportLine { CategoryId = c.Id, CategoryName = c.Name })
-//                .OrderBy(l => l.CategoryName)
-//                .Take(4)
+                .OrderBy(l => l.CategoryName)
                 .ToArray();
 
             return new ProductCategoryReport(lines, DateTime.Now);
