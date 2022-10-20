@@ -15,7 +15,7 @@ namespace EntityFrameworkLinq.Models
         public int PersonId { get; set; }
 
         [Column("contact_type_id")]
-        [ForeignKey(nameof(Type))]
+        [ForeignKey(nameof(ContactType))]
         public int ContactTypeId { get; set; }
 
         [Column("contact_value")]

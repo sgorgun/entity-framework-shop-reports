@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EntityFrameworkLinq.Models
 {
     [Table("supermarkets")]
     public class Supermarket
     {
+        [Key]
         [Column("supermarket_id")]
         public int Id { get; set; }
 
