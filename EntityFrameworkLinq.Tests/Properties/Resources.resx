@@ -123,6 +123,13 @@
   <data name="GetProductReport" xml:space="preserve">
     <value>SELECT p.product_id, t.product_title, m.manufacturer_name, p.unit_price FROM shop_products AS p INNER JOIN product_titles AS t ON t.product_title_id = p.product_title_id INNER JOIN product_manufacturers AS m ON m.manufacturer_id = p.product_manufacturer_id ORDER BY t.product_title DESC</value>
   </data>
+  <data name="GetProductTitleSalesRevenueReport" xml:space="preserve">
+    <value>SELECT /*SP.product_id,*/ PT.product_title,SUM(CO.price_with_discount),SUM(CO.product_amount)
+FROM customer_order_details AS CO LEFT JOIN shop_products SP ON CO.product_id=SP.product_id 
+LEFT JOIN product_titles PT ON SP.product_title_id=PT.product_title_id
+GROUP BY /*SP.product_id,*/PT.product_title
+ORDER BY SUM(CO.price_with_discount) DESC;</value>
+  </data>
   <data name="GetReportCategoriesReport" xml:space="preserve">
     <value>SELECT category_id, category_name FROM product_categories ORDER BY category_name</value>
   </data>

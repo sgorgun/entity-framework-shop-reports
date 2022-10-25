@@ -12,7 +12,7 @@ namespace EntityFrameworkLinq.Tests.Services
     [TestFixture]
     public sealed class ProductReportServiceTests : IDisposable
     {
-        private const int MethodsCount = 3;
+        private const int MethodsCount = 4;
         private static ShopContextFactory factory;
         private static ProductReportService service;
         private static List<(string methodName, IReadOnlyList<BaseReportLine> actual, IReadOnlyList<BaseReportLine> expected)> testContainer;
@@ -27,6 +27,7 @@ namespace EntityFrameworkLinq.Tests.Services
             testContainer.Add(("GetReportCategoriesReport", service.GetProductCategories().Lines, factory.ReadEntities(GetSqlQuery("GetReportCategoriesReport"), ProductCategoryReportLineCreator.Create)));
             testContainer.Add(("GetProductReport", service.GetProductReport().Lines, factory.ReadEntities(GetSqlQuery("GetProductReport"), ProductReportLineCreator.Create)));
             testContainer.Add(("GetFullProductReport", service.GetFullProductReport().Lines, factory.ReadEntities(GetSqlQuery("GetFullProductReport"), FullProductReportLineCreator.Create)));
+            testContainer.Add(("GetProductTitleSalesRevenueReport", service.GetProductTitleSalesRevenueReport().Lines, factory.ReadEntities(GetSqlQuery("GetProductTitleSalesRevenueReport"), ProductTitleSalesRevenueReportLineCreator.Create)));
         }
 
         [Test]
@@ -37,8 +38,8 @@ namespace EntityFrameworkLinq.Tests.Services
             var errorMsg = $"Class: ProductReportService \n  Method {rec.methodName} returns report";
             var rowNumberErrorMsg = errorMsg + $" that must conteins {rec.expected.Count} lines, but {rec.actual.Count} lines given!";
             var dataSetErrorMsg = errorMsg + $" that actual data \n{rec.actual.ConvertToString()}   are not equals to expected data \n{rec.expected.ConvertToString()}";
-            Assert.AreEqual(rec.actual.Count, rec.expected.Count, rowNumberErrorMsg);
-            Assert.AreEqual(rec.actual, rec.expected, dataSetErrorMsg);
+            //Assert.AreEqual(rec.expected.Count, rec.actual.Count, rowNumberErrorMsg);
+            Assert.AreEqual(rec.expected, rec.actual, dataSetErrorMsg);
         }
 
         public void Dispose()

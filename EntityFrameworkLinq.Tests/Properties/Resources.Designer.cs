@@ -79,6 +79,19 @@ namespace EntityFrameworkLinq.Tests.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SELECT /*SP.product_id,*/ PT.product_title,SUM(CO.price_with_discount),SUM(CO.product_amount)
+        ///FROM customer_order_details AS CO LEFT JOIN shop_products SP ON CO.product_id=SP.product_id 
+        ///LEFT JOIN product_titles PT ON SP.product_title_id=PT.product_title_id
+        ///GROUP BY /*SP.product_id,*/PT.product_title
+        ///ORDER BY SUM(CO.price_with_discount) DESC;.
+        /// </summary>
+        internal static string GetProductTitleSalesRevenueReport {
+            get {
+                return ResourceManager.GetString("GetProductTitleSalesRevenueReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SELECT category_id, category_name FROM product_categories ORDER BY category_name.
         /// </summary>
         internal static string GetReportCategoriesReport {

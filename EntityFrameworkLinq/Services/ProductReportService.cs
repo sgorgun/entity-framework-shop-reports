@@ -1,6 +1,7 @@
 ﻿using EntityFrameworkLinq.Models;
 using EntityFrameworkLinq.Reports;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EntityFrameworkLinq.Services
 {
@@ -45,6 +46,53 @@ namespace EntityFrameworkLinq.Services
                 .ToArray();
 
             return new FullProductReport(lines, DateTime.Now);
+        }
+
+        public ProductTitleSalesRevenueReport GetProductTitleSalesRevenueReport()
+        {
+            //this.shopContext.Database.Log = Console.Out;
+            var lines = this.shopContext.OrderDetails
+                .Include(p => p.Product)
+                .Include(p => p.Product.Title)
+                /*.Select(p => new ProductTitleSalesRevenueReportLine {
+                    ProductTitleName = p.Product.Title.Title,
+                    SalesRevenue = (double)p.PriceWithDiscount,
+                    SalesAmount = p.ProductAmount,
+                })*/
+                .GroupBy(x => x.Product.Title.Title)
+                .Select(g => new ProductTitleSalesRevenueReportLine
+                {
+                    ProductTitleName = g.Key,
+                    SalesRevenue = g.Sum(x => (double)x.PriceWithDiscount),
+                    SalesAmount = g.Sum(x => x.ProductAmount),
+                })
+            .OrderByDescending(l => l.SalesRevenue)
+            .ToArray();
+            return new ProductTitleSalesRevenueReport(lines, DateTime.Now);
+        }
+
+        public ProductTitleSalesRevenueReport GetProductTitleSalesRevenueReportOld()
+        {
+            var lines = this.shopContext.OrderDetails
+                .Include(p => p.Product)
+                .Include(p => p.Product.Title)
+                .Select(p => new ProductTitleSalesRevenueReportLine
+                {
+                    ProductTitleName = p.Product.Title.Title,
+                    SalesRevenue = (double)p.PriceWithDiscount,
+                    SalesAmount = p.ProductAmount,
+                })
+                .GroupBy(x => x.ProductTitleName)
+                .Select(g => new ProductTitleSalesRevenueReportLine
+                {
+                    ProductTitleName = g.Key,
+                    SalesRevenue = g.Sum(x => x.SalesRevenue),
+                    SalesAmount = g.Sum(x => x.SalesAmount),
+                })
+                .OrderByDescending(l => l.SalesRevenue)
+                .ToArray();
+
+            return new ProductTitleSalesRevenueReport(lines, DateTime.Now);
         }
     }
 }
