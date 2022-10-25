@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EntityFrameworkLinq.Reports.Creators
 {
-    public class FullProductReportLineCreator//:IReportLineCreator
+    public class FullProductReportLineCreator
     {
         public static FullProductReportLine Create(DbDataReader reader)
         {

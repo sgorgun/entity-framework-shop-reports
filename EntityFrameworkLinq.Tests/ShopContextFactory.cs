@@ -30,7 +30,7 @@ namespace EntityFrameworkLinq.Tests
                 .Options;
         }
 
-        public IReadOnlyList<T> ReadEntities<T>(string commandText, Func<DbDataReader, T> builder)
+        public IReadOnlyList<T> ReadEntities<T>(string? commandText, Func<DbDataReader, T> builder)
         {
             var list = new List<T>();
 

@@ -44,7 +44,7 @@ namespace EntityFrameworkLinq.Tests.Models
             Assert.AreEqual(0, this.ClassType.GetEvents(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Length, "Checking events number");
         }
 
-        [TestCase(("customer_orders"))]
+        [TestCase("customer_orders")]
         public void HasTableAttribute(string tableName)
         {
             this.AssertThatHasTableAttribute(tableName);

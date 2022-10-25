@@ -8,6 +8,5 @@ namespace EntityFrameworkLinq.Reports
 {
     public abstract class BaseReportLine
     {
-
     }
 }

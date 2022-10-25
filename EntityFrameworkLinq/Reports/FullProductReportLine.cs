@@ -38,7 +38,7 @@
 
         public override string ToString()
         {
-            return $"{ProductId}|{Name}|{CategoryId}|{Category}|{Manufacturer}|{Price}";
+            return $"{this.ProductId}|{this.Name}|{this.CategoryId}|{this.Category}|{this.Manufacturer}|{this.Price}";
         }
     }
 }

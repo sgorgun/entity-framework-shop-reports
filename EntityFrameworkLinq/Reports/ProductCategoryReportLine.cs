@@ -1,6 +1,6 @@
-﻿using EntityFrameworkLinq.Models;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Xml.Linq;
+using EntityFrameworkLinq.Models;
 
 namespace EntityFrameworkLinq.Reports
 {
@@ -29,7 +29,7 @@ namespace EntityFrameworkLinq.Reports
 
         public override string ToString()
         {
-            return $"{CategoryId}|{CategoryName}";
+            return $"{this.CategoryId}|{this.CategoryName}";
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using EntityFrameworkLinq.Models;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
+using EntityFrameworkLinq.Models;
 
 namespace EntityFrameworkLinq.Reports
 {
@@ -33,10 +33,9 @@ namespace EntityFrameworkLinq.Reports
             return this.ProductId;
         }
 
-
         public override string ToString()
         {
-            return $"{ProductId}|{ProductTitle}|{Manufacturer}|{Price}";
+            return $"{this.ProductId}|{this.ProductTitle}|{this.Manufacturer}|{this.Price}";
         }
     }
 }

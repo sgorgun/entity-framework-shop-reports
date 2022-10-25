@@ -16,8 +16,8 @@ namespace EntityFrameworkLinq.Tests.Helper
             {
                 builder.AppendLine(line.ToString());
             }
+
             return builder.ToString();
         }
-
     }
 }
