@@ -4,6 +4,10 @@ namespace ShopReports.Models
 {
     public class ShopContext : DbContext
     {
+        public ShopContext()
+        {
+        }
+
         public ShopContext(DbContextOptions options)
             : base(options)
         {
