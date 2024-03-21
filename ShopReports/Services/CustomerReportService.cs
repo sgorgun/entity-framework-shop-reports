@@ -35,11 +35,12 @@ namespace ShopReports.Services
                     {
                         CustomerId = c.CustomerId,
                         PersonFirstName = c.PersonFirstName,
-                        PersonLastName = c.PersonFirstName,
+                        PersonLastName = c.PersonLastName,
+                        OrderId = c.OrderId,
                     })
                 .Join(
                     this.shopContext.OrderDetails,
-                    co => co.CustomerId,
+                    co => co.OrderId,
                     od => od.OrderId,
                     (co, od) => new CustomerSalesRevenueReportLine
                     {
@@ -47,7 +48,17 @@ namespace ShopReports.Services
                         PersonFirstName = co.PersonFirstName,
                         PersonLastName = co.PersonLastName,
                         SalesRevenue = od.PriceWithDiscount,
-                    }).ToList();
+                    })
+                .GroupBy(c => c.CustomerId)
+                .Select(g => new CustomerSalesRevenueReportLine
+                {
+                    CustomerId = g.Key,
+                    PersonFirstName = g.First().PersonFirstName,
+                    PersonLastName = g.First().PersonLastName,
+                    SalesRevenue = g.Sum(x => x.SalesRevenue),
+                })
+                .OrderByDescending(c => c.SalesRevenue)
+                .ToList();
 
             var report = new CustomerSalesRevenueReport(query, DateTime.Now);
             return report;

@@ -16,7 +16,7 @@ namespace ShopReports.Models
         [Column("discount")]
         public decimal Discount { get; set; }
 
-        [ForeignKey("Persons")]
+        [ForeignKey("Id")]
         public Person Person { get; set; }
 
         public virtual IList<Order> Orders { get; set; }
