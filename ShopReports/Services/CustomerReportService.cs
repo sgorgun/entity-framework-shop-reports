@@ -33,20 +33,20 @@ namespace ShopReports.Services
                     p => p.Id,
                     (c, p) => new
                     {
-                        CustomerId = c.CustomerId,
-                        PersonFirstName = c.PersonFirstName,
-                        PersonLastName = c.PersonLastName,
-                        OrderId = c.OrderId,
+                        Id = c.CustomerId,
+                        FirstName = c.PersonFirstName,
+                        LastName = c.PersonLastName,
+                        OrId = c.OrderId,
                     })
                 .Join(
                     this.shopContext.OrderDetails,
-                    co => co.OrderId,
+                    co => co.OrId,
                     od => od.OrderId,
                     (co, od) => new CustomerSalesRevenueReportLine
                     {
-                        CustomerId = co.CustomerId,
-                        PersonFirstName = co.PersonFirstName,
-                        PersonLastName = co.PersonLastName,
+                        CustomerId = co.Id,
+                        PersonFirstName = co.FirstName,
+                        PersonLastName = co.LastName,
                         SalesRevenue = od.PriceWithDiscount,
                     })
                 .GroupBy(c => c.CustomerId)
